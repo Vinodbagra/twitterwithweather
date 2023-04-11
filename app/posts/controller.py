@@ -1,10 +1,6 @@
 from app.posts.models import User
 from math import sin, cos, sqrt, atan2, radians
 from app import db
-import queue
-
-# create a PriorityQueue object
-pq = queue.PriorityQueue()
 
 def create_post(text, latitude, longitude):
     post = User(text=text, latitude=latitude, longitude=longitude)
@@ -12,7 +8,7 @@ def create_post(text, latitude, longitude):
     db.session.commit()
     return post
 
-min_heap = []
+distancelist = []
 def get_posts(latitude,longitude):
     users = User.query.all()
    
@@ -20,20 +16,13 @@ def get_posts(latitude,longitude):
         userlat = user.latitude
         userlong = user.longitude
         d = get_distance(latitude,longitude,userlat,userlong)
-        pq.put((d,user))
+        distancelist.append((d,user))
 
- 
+    distancelist.sort()
     sorted_data = []
-    cnt = 0
-    while not pq.empty():
-        if(cnt < 10):
-            item = pq.get()
-            sorted_data.append(item[1])
-            cnt = cnt+1
-        else:
-            break
+    for x in distancelist:
+        sorted_data.append(x[1])
         
-
     return sorted_data
 
 def get_distance(latitude1,longitude1,latitude2,longitude2):
