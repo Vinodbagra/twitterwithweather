@@ -9,7 +9,6 @@ def get_all_posts():
     latitude = data['latitude']
     longitude = data['longitude']
     posts = get_posts(latitude,longitude)
-    print(posts)
     
     return jsonify([post.as_dict()for post in posts]), 200
 

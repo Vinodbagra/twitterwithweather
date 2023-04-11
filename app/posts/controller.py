@@ -8,7 +8,6 @@ pq = queue.PriorityQueue()
 
 def create_post(text, latitude, longitude):
     post = User(text=text, latitude=latitude, longitude=longitude)
-    print(post)
     db.session.add(post)
     db.session.commit()
     return post
